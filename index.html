@@ -45,11 +45,13 @@
             </div>
         </div>
     </div>
-	<p>JSON or Javascript Object Notation, is a data format that has taken the web by storm. JSON is essentially a simpler, more compact and more easily readable XML which is the serialization format for javascript objects, so it works with both server and client side software.</p>
-	<p>We have developed relatively simple schemas for healthcare formats such as history and physical documents, radiology reports, operative reports etc. These leverage JSON formats used in healthcare namely <a href="http://fhir.org">FHIR</a></p>
+<p>JSON or Javascript Object Notation, is a data format that has taken the web by storm. JSON is essentially a simpler, more compact and more easily readable XML which is the serialization format for javascript objects, so it works with both server and client side software.</p>
+	<p>We have developed relatively simple schemas for healthcare formats such as history and physical documents, radiology reports, operative reports etc. These leverage JSON formats used in healthcare namely <a href="http://fhir.org">FHIR.</a></p>
+	<p>In distinction to the <a href="https://hl7.org">HL7 standards</a>, which represent the information in healthcare systems, these formats are intended to be simplified versions which represent the information used by healthcaare practitioners, yet including identifiers which can allow healthcare systems to obtain the full context from these simplified documents. For example a "rx" or presectiption needs to contain the patient's name and identifiers such as birthdate, and id as well as codes needed to definitively identify the prescribed drug, frequency of intake and length of time i.e. what used to be on a written script. Similarly a history and physical contains the information on the history and physical as well as patient identifying information but not necessarily all the metadata.</p>
+	<p>It is intended that healthcare organizations can exchange these documents with full HL7 compliant databaases. Once data is in JSON format, its easy(er) to transform specific formats.</p>
     <!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-beta1/js/bootstrap.bundle.min.js"></script> -->
 <script src="js/popper.min.js"></script>
-    <script src="js/bootstrap-4.4.1.js"></script>
+<script src="js/bootstrap-4.4.1.js"></script>
     <!-- <script src="assets/js/jquery.min.js"></script> -->
     <script src="js/jquery-3.4.1.min.js"></script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
