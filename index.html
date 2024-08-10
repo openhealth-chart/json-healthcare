@@ -247,6 +247,7 @@
 <pre id="neurologic_exam_schema">
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id" : "http://json.healthcare.org/#neurologic_exam_schema"
   "type": "object",
   "properties": {
     "mental_status": {
@@ -476,6 +477,7 @@
 <pre id="opthalmic_exam_schema">
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id" : "http://json.healthcare.org/#opthalmic_exam_schema"
   "type": "object",
   "properties": {
     "visual_acuity": {
@@ -630,6 +632,7 @@
 <pre id="HEENT_exam_schema">
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id" : "http://json.healthcare.org/#HEENT_exam_schema"
   "type": "object",
   "properties": {
     "head": {
@@ -828,6 +831,7 @@
 <pre id="abdominal_exam_schema">
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id" : "http://json.healthcare.org/#abdominal_exam_schema"
   "type": "object",
   "properties": {
     "bowel_sounds": {
@@ -972,6 +976,7 @@
 <pre id="cardiac_exam_schema">
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id" : "http://json.healthcare.org/#cardiac_exam_schema"
   "type": "object",
   "properties": {
     "heart_rate": {
@@ -1193,6 +1198,141 @@
     "blood_pressure",
     "jugular_venous_pressure",
     "edema"
+  ],
+  "additionalProperties": false
+}
+</pre>
+<h3>Pulmonary Exam Schema</h3>
+<pre id="pulmonary_exam_schema">
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id" : "http://json.healthcare.org/#pulmonary_exam_schema"
+  "type": "object",
+  "properties": {
+    "respiratory_rate": {
+      "oneOf": [
+        {
+          "type": "integer",
+          "description": "The patient's respiratory rate in breaths per minute."
+        },
+        {
+          "type": "string",
+          "enum": ["normal", "tachypnea", "bradypnea"],
+          "description": "A simplified description of the respiratory rate."
+        }
+      ]
+    },
+    "breath_sounds": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "vesicular": {
+              "type": "string",
+              "enum": ["normal", "diminished"],
+              "description": "Assessment of vesicular breath sounds."
+            },
+            "bronchial": {
+              "type": "string",
+              "enum": ["normal", "increased", "decreased"],
+              "description": "Assessment of bronchial breath sounds."
+            },
+            "crackles": {
+              "type": "string",
+              "enum": ["present", "absent"],
+              "description": "Assessment of crackles."
+            },
+            "wheezes": {
+              "type": "string",
+              "enum": ["present", "absent"],
+              "description": "Assessment of wheezes."
+            },
+            "rhonchi": {
+              "type": "string",
+              "enum": ["present", "absent"],
+              "description": "Assessment of rhonchi."
+            }
+          },
+          "required": ["vesicular", "bronchial", "crackles", "wheezes", "rhonchi"]
+        },
+        {
+          "type": "string",
+          "description": "A simplified description of breath sounds."
+        }
+      ]
+    },
+    "chest_expansion": {
+      "oneOf": [
+        {
+          "type": "string",
+          "enum": ["normal", "decreased"],
+          "description": "Assessment of chest expansion."
+        },
+        {
+          "type": "null",
+          "description": "No chest expansion assessment recorded."
+        }
+      ]
+    },
+    "percussion": {
+      "oneOf": [
+        {
+          "type": "string",
+          "enum": ["resonant", "dull", "hyperresonant"],
+          "description": "Assessment of chest percussion."
+        },
+        {
+          "type": "null",
+          "description": "No percussion assessment recorded."
+        }
+      ]
+    },
+    "tactile_fremitus": {
+      "oneOf": [
+        {
+          "type": "string",
+          "enum": ["normal", "increased", "decreased"],
+          "description": "Assessment of tactile fremitus."
+        },
+        {
+          "type": "null",
+          "description": "No tactile fremitus assessment recorded."
+        }
+      ]
+    },
+    "egophony": {
+      "oneOf": [
+        {
+          "type": "string",
+          "enum": ["present", "absent"],
+          "description": "Assessment of egophony."
+        },
+        {
+          "type": "null",
+          "description": "No egophony assessment recorded."
+        }
+      ]
+    },
+    "additional_notes": {
+      "oneOf": [
+        {
+          "type": "string",
+          "description": "Any additional notes or observations during the chest/pulmonary exam."
+        },
+        {
+          "type": "null",
+          "description": "No additional notes recorded."
+        }
+      ]
+    }
+  },
+  "required": [
+    "respiratory_rate",
+    "breath_sounds",
+    "chest_expansion",
+    "percussion",
+    "tactile_fremitus",
+    "egophony"
   ],
   "additionalProperties": false
 }
