@@ -70,6 +70,79 @@
 	Specimens : "example specimens"
   }
 	</pre>
+	<p>This is what healthcare professionals recognize as an operaative report. It is essentially JSON. We can create a actual JSON schema to specify this:</p>
+	<pre id="operative_report_schema">
+const operative_report_schema = {
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"type": "object",
+	"properties": {
+    	"type" : {
+      	"const" : "operative_report"
+    },
+    "patient" : patient_schema,
+    "surgeon" : {
+      "type" : "string",
+      "description" : "surgeon or surgeon(s) name"
+    },
+    "assistant" : {
+      "type" : "string",
+      "description" : "assistants to surgeon"
+    },
+    "preop_diagnoses": {
+      "type": "string",
+      "description": "The preoperative diagnoses."
+    },
+    "postop_diagnoses": {
+      "type": "string",
+      "description": "The postoperative diagnoses."
+    },
+    "icd10_codes" : code_schema,
+    "indications": {
+      "type": "string",
+      "description": "The indications for the surgery."
+    },
+    "procedures": {
+      "type": "string",
+      "description": "The procedures performed."
+    },
+    "cpt_codes" : code_schema,
+    "procedure_description": {
+      "type": "string",
+      "description": "The detailed description of the procedure."
+    },
+    "findings": {
+      "type": "string",
+      "description": "The findings observed during the procedure."
+    },
+    "specimens": {
+      "type": "string",
+      "description": "Specimens obtained during the procedure."
+    },
+    "ebl": {
+      "type": "string",
+      "description": "Estimated blood loss during the procedure."
+    },
+    "complications": {
+      "type": "string",
+      "description": "Any complications that occurred during the procedure."
+    }
+  },
+  "required": [
+    "preop_diagnoses",
+    "postop_diagnoses",
+    "icd10_codes",
+    "indications",
+    "procedures",
+    "cpt_codes",
+    "procedure_description",
+    "findings",
+    "specimens",
+    "ebl",
+    "complications"
+  ],
+  "additionalProperties": false
+};
+	</pre>
     <!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-beta1/js/bootstrap.bundle.min.js"></script> -->
 <script src="js/popper.min.js"></script>
     <!-- <script src="assets/js/jquery.min.js"></script> -->
