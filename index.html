@@ -41,8 +41,15 @@
       <li class="nav-item dropdown"> 
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown1" role="button" data-bs-toggle="dropdown" aria-expanded="false"> Schemas </a>
         <ul class="dropdown-menu" aria-labelledby="navbarDropdown1">
-          <li><a class="dropdown-item" href="#operative_report_schema">Operative Report Schema</a></li>
-          <li><a class="dropdown-item" href="#patient_schema">Patient Schema</a></li>
+        	<li><a class="dropdown-item" href="#operative_report_schema">Operative Report Schema</a></li>
+        	<li><a class="dropdown-item" href="#patient_schema">Patient Schema</a></li>
+			<li><a class="dropdown-item" href="#neurologic_exam_schema">Neurologic Exam Schema</a></li>
+			<li><a class="dropdown-item" href="#opthalmicc_exam_schema">Opthalmic Exam Schema</a></li>
+			<li><a class="dropdown-item" href="#HEENT_exam_schema">HEENT Exam Schema</a></li>
+			<li><a class="dropdown-item" href="#cardiac_exam_schema">Cardiac Exam Schema</a></li>
+			<li><a class="dropdown-item" href="#chest_exam_schema">Pulmonary Exam Schema</a></li>
+			<li><a class="dropdown-item" href="#abdominal_exam_schema">Abdominal Exam Schema</a></li>
+			<li><a class="dropdown-item" href="#vascular_exam_schema">Vascular Exam Schema</a></li>
           <li><hr class="dropdown-divider"></li>
           <li><a class="dropdown-item" href="#">Something else here</a></li>
         </ul>
@@ -212,6 +219,611 @@
   ],
   "additionalProperties": false
 }</pre>
+	<h3>code schema</h3>
+	<pre id="code_schema">
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "properties": {
+      "code": {
+        "type": "string",
+        "description": "The ICD10 or CPT code."
+      },
+      "description": {
+        "type": "string",
+        "description": "Description of the ICD10 or CPT code."
+      },
+      "text": {
+        "type": "string",
+        "description": "Text corresponding to this ICD10 or CPT code from the user request."
+      }
+    },
+    "required": ["code", "description"],
+    "additionalProperties": false
+}};</pre>
+	<h3>Neurologic Exam</h3>
+<pre id="neurologic_exam_schema">
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "mental_status": {
+      "type": ["object", "null"],
+      "properties": {
+        "level_of_consciousness": {
+          "oneOf": [
+            {
+              "type": "string",
+              "enum": ["alert", "lethargic", "stupor", "coma"],
+              "description": "The patient's level of consciousness."
+            },
+            {
+              "type": "object",
+              "properties": {
+                "eye_opening": {
+                  "type": "integer",
+                  "enum": [1, 2, 3, 4],
+                  "description": "Eye-opening response, scored from 1 to 4."
+                },
+                "verbal_response": {
+                  "type": "integer",
+                  "enum": [1, 2, 3, 4, 5],
+                  "description": "Verbal response, scored from 1 to 5."
+                },
+                "motor_response": {
+                  "type": "integer",
+                  "enum": [1, 2, 3, 4, 5, 6],
+                  "description": "Motor response, scored from 1 to 6."
+                },
+                "total_score": {
+                  "type": "integer",
+                  "minimum": 3,
+                  "maximum": 15,
+                  "description": "Total Glasgow Coma Scale score, calculated from eye, verbal, and motor responses."
+                }
+              },
+              "required": ["eye_opening", "verbal_response", "motor_response", "total_score"],
+              "description": "Glasgow Coma Scale (GCS) scoring for level of consciousness."
+            }
+          ]
+        },
+        "orientation": {
+          "type": ["array", "null"],
+          "items": {
+            "type": "string",
+            "enum": ["person", "place", "time"],
+            "description": "The patient's orientation to person, place, and time."
+          },
+          "description": "Array indicating the patient's orientation to person, place, and time."
+        },
+        "memory": {
+          "type": ["string", "null"],
+          "description": "The patient's memory assessment."
+        },
+        "attention": {
+          "type": ["string", "null"],
+          "description": "The patient's attention and concentration."
+        },
+        "speech": {
+          "type": ["string", "null"],
+          "description": "The patient's speech characteristics."
+        }
+      },
+      "required": ["level_of_consciousness", "orientation", "memory", "attention", "speech"]
+    },
+    "cranial_nerves": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "cn_1": { "type": "string", "description": "Cranial Nerve I (Olfactory) function." },
+            "cn_2": { "type": "string", "description": "Cranial Nerve II (Optic) function." },
+            "cn_3": { "type": "string", "description": "Cranial Nerve III (Oculomotor) function." },
+            "cn_4": { "type": "string", "description": "Cranial Nerve IV (Trochlear) function." },
+            "cn_5": { "type": "string", "description": "Cranial Nerve V (Trigeminal) function." },
+            "cn_6": { "type": "string", "description": "Cranial Nerve VI (Abducens) function." },
+            "cn_7": { "type": "string", "description": "Cranial Nerve VII (Facial) function." },
+            "cn_8": { "type": "string", "description": "Cranial Nerve VIII (Vestibulocochlear) function." },
+            "cn_9": { "type": "string", "description": "Cranial Nerve IX (Glossopharyngeal) function." },
+            "cn_10": { "type": "string", "description": "Cranial Nerve X (Vagus) function." },
+            "cn_11": { "type": "string", "description": "Cranial Nerve XI (Accessory) function." },
+            "cn_12": { "type": "string", "description": "Cranial Nerve XII (Hypoglossal) function." }
+          },
+          "required": ["cn_1", "cn_2", "cn_3", "cn_4", "cn_5", "cn_6", "cn_7", "cn_8", "cn_9", "cn_10", "cn_11", "cn_12"]
+        },
+        {
+          "type": "string"
+        }
+      ]
+    },
+    "motor_function": {
+      "type": "object",
+      "properties": {
+        "muscle_bulk": {
+          "type": ["string", "null"],
+          "description": "Assessment of muscle bulk."
+        },
+        "muscle_tone": {
+          "type": ["string", "null"],
+          "description": "Assessment of muscle tone."
+        },
+        "muscle_strength": {
+          "oneOf": [
+            {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "muscle_name": {
+                    "type": "string",
+                    "description": "The name of the muscle."
+                  },
+                  "strength": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 5,
+                    "description": "The muscle strength on a scale of 0-5."
+                  }
+                },
+                "required": ["muscle_name", "strength"],
+                "additionalProperties": false
+              },
+              "description": "An array of muscle names and their corresponding strength."
+            },
+            {
+              "type": "string"
+            }
+          ]
+        },
+        "involuntary_movements": {
+          "type": ["string", "null"],
+          "description": "Assessment of any involuntary movements."
+        }
+      },
+      "required": ["muscle_bulk", "muscle_tone", "muscle_strength", "involuntary_movements"]
+    },
+    "reflexes": {
+      "type": "object",
+      "properties": {
+        "deep_tendon_reflexes": {
+          "type": "string",
+          "description": "Assessment of deep tendon reflexes."
+        },
+        "plantar_reflex": {
+          "type": "string",
+          "description": "Assessment of the plantar reflex."
+        }
+      },
+      "required": ["deep_tendon_reflexes", "plantar_reflex"]
+    },
+    "sensory_function": {
+      "type": "object",
+      "properties": {
+        "light_touch": {
+          "type": "string",
+          "description": "Assessment of light touch sensation."
+        },
+        "pain": {
+          "type": "string",
+          "description": "Assessment of pain sensation."
+        },
+        "temperature": {
+          "type": "string",
+          "description": "Assessment of temperature sensation."
+        },
+        "vibration": {
+          "type": "string",
+          "description": "Assessment of vibration sensation."
+        },
+        "proprioception": {
+          "type": "string",
+          "description": "Assessment of proprioception."
+        }
+      },
+      "required": ["light_touch", "pain", "temperature", "vibration", "proprioception"]
+    },
+    "coordination": {
+      "type": ["object", "null"],
+      "properties": {
+        "finger_to_nose": {
+          "type": "string",
+          "description": "Assessment of finger-to-nose coordination."
+        },
+        "heel_to_shin": {
+          "type": "string",
+          "description": "Assessment of heel-to-shin coordination."
+        },
+        "rapid_alternating_movements": {
+          "type": "string",
+          "description": "Assessment of rapid alternating movements."
+        }
+      },
+      "required": ["finger_to_nose", "heel_to_shin", "rapid_alternating_movements"]
+    },
+    "gait_and_stance": {
+      "type": ["object", "null"],
+      "properties": {
+        "gait": {
+          "type": "string",
+          "description": "Assessment of gait."
+        },
+        "romberg_test": {
+          "type": "string",
+          "description": "Result of the Romberg test."
+        }
+      },
+      "required": ["gait", "romberg_test"]
+    },
+    "additional_notes": {
+      "type": "string",
+      "description": "Any additional notes or observations during the exam."
+    }
+  },
+  "required": [
+    "mental_status",
+    "cranial_nerves",
+    "motor_function",
+    "reflexes",
+    "sensory_function",
+    "coordination",
+    "gait_and_stance"
+  ],
+  "additionalProperties": false
+}</pre>
+<h3>Opthalmic Exam Schema</h3>
+<pre id="opthalmic_exam_schema">
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "visual_acuity": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "right_eye": {
+              "type": "string",
+              "description": "Visual acuity in the right eye."
+            },
+            "left_eye": {
+              "type": "string",
+              "description": "Visual acuity in the left eye."
+            },
+            "both_eyes": {
+              "type": "string",
+              "description": "Visual acuity in both eyes together."
+            }
+          },
+          "required": ["right_eye", "left_eye", "both_eyes"]
+        },
+        {
+          "type": "string",
+          "description": "A simplified description of visual acuity."
+        }
+      ]
+    },
+    "pupillary_reaction": {
+      "oneOf": [
+        {
+          "type": "string",
+          "enum": ["normal", "sluggish", "non-reactive"],
+          "description": "Assessment of pupillary reaction to light."
+        },
+        {
+          "type": "null",
+          "description": "No pupillary reaction assessment recorded."
+        }
+      ]
+    },
+    "ocular_alignment": {
+      "oneOf": [
+        {
+          "type": "string",
+          "enum": ["normal", "esotropia", "exotropia", "hypertropia", "hypotropia"],
+          "description": "Assessment of ocular alignment."
+        },
+        {
+          "type": "null",
+          "description": "No ocular alignment assessment recorded."
+        }
+      ]
+    },
+    "extraocular_movements": {
+      "oneOf": [
+        {
+          "type": "string",
+          "enum": ["intact", "restricted"],
+          "description": "Assessment of extraocular movements."
+        },
+        {
+          "type": "null",
+          "description": "No extraocular movements assessment recorded."
+        }
+      ]
+    },
+    "visual_fields": {
+      "oneOf": [
+        {
+          "type": "string",
+          "enum": ["full", "restricted"],
+          "description": "Assessment of visual fields."
+        },
+        {
+          "type": "null",
+          "description": "No visual fields assessment recorded."
+        }
+      ]
+    },
+    "fundoscopy": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "optic_disc": {
+              "type": "string",
+              "enum": ["normal", "pale", "hyperemic", "edematous"],
+              "description": "Assessment of the optic disc."
+            },
+            "macula": {
+              "type": "string",
+              "enum": ["normal", "hemorrhage", "exudates", "drusen"],
+              "description": "Assessment of the macula."
+            },
+            "vessels": {
+              "type": "string",
+              "enum": ["normal", "narrowed", "dilated", "tortuous"],
+              "description": "Assessment of retinal vessels."
+            },
+            "retina": {
+              "type": "string",
+              "enum": ["normal", "detached", "hemorrhage", "exudates"],
+              "description": "Assessment of the retina."
+            }
+          },
+          "required": ["optic_disc", "macula", "vessels", "retina"]
+        },
+        {
+          "type": "string",
+          "description": "A simplified description of fundoscopy findings."
+        }
+      ]
+    },
+    "intraocular_pressure": {
+      "oneOf": [
+        {
+          "type": "string",
+          "description": "Assessment of intraocular pressure."
+        },
+        {
+          "type": "null",
+          "description": "No intraocular pressure assessment recorded."
+        }
+      ]
+    },
+    "additional_notes": {
+      "oneOf": [
+        {
+          "type": "string",
+          "description": "Any additional notes or observations during the ophthalmic exam."
+        },
+        {
+          "type": "null",
+          "description": "No additional notes recorded."
+        }
+      ]
+    }
+  },
+  "required": [
+    "visual_acuity",
+    "pupillary_reaction",
+    "ocular_alignment",
+    "extraocular_movements",
+    "visual_fields",
+    "fundoscopy"
+  ],
+  "additionalProperties": false
+}
+</pre>
+<h3>HEENT Exam Schema</h3>
+<pre id="HEENT_exam_schema">
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "head": {
+      "oneOf": [
+        {
+          "type": "string",
+          "enum": ["normocephalic", "atraumatic", "abnormal"],
+          "description": "Assessment of the head."
+        },
+        {
+          "type": "null",
+          "description": "No head assessment recorded."
+        }
+      ]
+    },
+    "eyes": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "conjunctiva": {
+              "type": "string",
+              "enum": ["clear", "injected", "pale"],
+              "description": "Assessment of the conjunctiva."
+            },
+            "sclera": {
+              "type": "string",
+              "enum": ["normal", "icteric"],
+              "description": "Assessment of the sclera."
+            },
+            "pupils": {
+              "type": "string",
+              "enum": ["equal", "unequal", "reactive", "non-reactive"],
+              "description": "Assessment of pupil size and reactivity."
+            },
+            "extraocular_movements": {
+              "type": "string",
+              "enum": ["intact", "restricted"],
+              "description": "Assessment of extraocular movements."
+            }
+          },
+          "required": ["conjunctiva", "sclera", "pupils", "extraocular_movements"]
+        },
+        {
+          "type": "string",
+          "description": "A simplified description of the eye exam."
+        }
+      ]
+    },
+    "ears": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "canals": {
+              "type": "string",
+              "enum": ["clear", "obstructed"],
+              "description": "Assessment of the ear canals."
+            },
+            "tympanic_membranes": {
+              "type": "string",
+              "enum": ["intact", "perforated", "retracted", "bulging"],
+              "description": "Assessment of the tympanic membranes."
+            },
+            "hearing": {
+              "type": "string",
+              "enum": ["normal", "diminished", "absent"],
+              "description": "Assessment of hearing."
+            }
+          },
+          "required": ["canals", "tympanic_membranes", "hearing"]
+        },
+        {
+          "type": "string",
+          "description": "A simplified description of the ear exam."
+        }
+      ]
+    },
+    "nose": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "nares": {
+              "type": "string",
+              "enum": ["patent", "obstructed"],
+              "description": "Assessment of the nares."
+            },
+            "mucosa": {
+              "type": "string",
+              "enum": ["normal", "inflamed", "pale"],
+              "description": "Assessment of the nasal mucosa."
+            },
+            "discharge": {
+              "type": "string",
+              "enum": ["none", "clear", "purulent", "bloody"],
+              "description": "Description of any nasal discharge."
+            }
+          },
+          "required": ["nares", "mucosa", "discharge"]
+        },
+        {
+          "type": "string",
+          "description": "A simplified description of the nose exam."
+        }
+      ]
+    },
+    "throat": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "oropharynx": {
+              "type": "string",
+              "enum": ["clear", "erythematous", "exudative"],
+              "description": "Assessment of the oropharynx."
+            },
+            "tonsils": {
+              "type": "string",
+              "enum": ["normal", "enlarged", "absent"],
+              "description": "Assessment of the tonsils."
+            },
+            "uvula": {
+              "type": "string",
+              "enum": ["midline", "deviated"],
+              "description": "Assessment of the uvula."
+            },
+            "dentition": {
+              "type": "string",
+              "enum": ["normal", "poor", "absent"],
+              "description": "Assessment of dentition."
+            }
+          },
+          "required": ["oropharynx", "tonsils", "uvula", "dentition"]
+        },
+        {
+          "type": "string",
+          "description": "A simplified description of the throat exam."
+        }
+      ]
+    },
+    "neck": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "trachea": {
+              "type": "string",
+              "enum": ["midline", "deviated"],
+              "description": "Assessment of tracheal position."
+            },
+            "thyroid": {
+              "type": "string",
+              "enum": ["normal", "enlarged", "nodular"],
+              "description": "Assessment of the thyroid."
+            },
+            "lymph_nodes": {
+              "type": "string",
+              "enum": ["nonpalpable", "palpable", "tender", "nontender"],
+              "description": "Assessment of neck lymph nodes."
+            }
+          },
+          "required": ["trachea", "thyroid", "lymph_nodes"]
+        },
+        {
+          "type": "string",
+          "description": "A simplified description of the neck exam."
+        }
+      ]
+    },
+    "additional_notes": {
+      "oneOf": [
+        {
+          "type": "string",
+          "description": "Any additional notes or observations during the HEENT exam."
+        },
+        {
+          "type": "null",
+          "description": "No additional notes recorded."
+        }
+      ]
+    }
+  },
+  "required": [
+    "head",
+    "eyes",
+    "ears",
+    "nose",
+    "throat",
+    "neck"
+  ],
+  "additionalProperties": false
+}
+</pre>
     <!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-beta1/js/bootstrap.bundle.min.js"></script> -->
 <script src="js/popper.min.js"></script>
     <!-- <script src="assets/js/jquery.min.js"></script> -->
