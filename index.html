@@ -824,6 +824,379 @@
   "additionalProperties": false
 }
 </pre>
+	<h3>Abdominal Exam Schema</h3>
+<pre id="abdominal_exam_schema">
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "bowel_sounds": {
+      "oneOf": [
+        {
+          "type": "string",
+          "enum": ["normal", "hyperactive", "hypoactive", "absent"],
+          "description": "Assessment of bowel sounds."
+        },
+        {
+          "type": "null",
+          "description": "No bowel sounds assessment recorded."
+        }
+      ]
+    },
+    "tenderness": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "location": {
+              "type": "string",
+              "description": "Location of tenderness, if present."
+            },
+            "severity": {
+              "type": "string",
+              "enum": ["mild", "moderate", "severe"],
+              "description": "Severity of tenderness."
+            }
+          },
+          "required": ["location", "severity"]
+        },
+        {
+          "type": "string",
+          "enum": ["none"],
+          "description": "A simplified description indicating no tenderness."
+        }
+      ]
+    },
+    "distension": {
+      "oneOf": [
+        {
+          "type": "string",
+          "enum": ["none", "mild", "moderate", "severe"],
+          "description": "Assessment of abdominal distension."
+        },
+        {
+          "type": "null",
+          "description": "No distension assessment recorded."
+        }
+      ]
+    },
+    "guarding": {
+      "oneOf": [
+        {
+          "type": "string",
+          "enum": ["present", "absent"],
+          "description": "Assessment of abdominal guarding."
+        },
+        {
+          "type": "null",
+          "description": "No guarding assessment recorded."
+        }
+      ]
+    },
+    "rebound_tenderness": {
+      "oneOf": [
+        {
+          "type": "string",
+          "enum": ["present", "absent"],
+          "description": "Assessment of rebound tenderness."
+        },
+        {
+          "type": "null",
+          "description": "No rebound tenderness assessment recorded."
+        }
+      ]
+    },
+    "liver_size": {
+      "oneOf": [
+        {
+          "type": "string",
+          "description": "Description of liver size and span."
+        },
+        {
+          "type": "null",
+          "description": "No liver size assessment recorded."
+        }
+      ]
+    },
+    "spleen_size": {
+      "oneOf": [
+        {
+          "type": "string",
+          "description": "Description of spleen size."
+        },
+        {
+          "type": "null",
+          "description": "No spleen size assessment recorded."
+        }
+      ]
+    },
+    "masses": {
+      "oneOf": [
+        {
+          "type": "string",
+          "description": "Description of any palpable masses."
+        },
+        {
+          "type": "null",
+          "description": "No masses assessed or recorded."
+        }
+      ]
+    },
+    "additional_notes": {
+      "oneOf": [
+        {
+          "type": "string",
+          "description": "Any additional notes or observations during the abdominal exam."
+        },
+        {
+          "type": "null",
+          "description": "No additional notes recorded."
+        }
+      ]
+    }
+  },
+  "required": [
+    "bowel_sounds",
+    "tenderness",
+    "distension",
+    "guarding",
+    "rebound_tenderness",
+    "liver_size",
+    "spleen_size",
+    "masses"
+  ],
+  "additionalProperties": false
+}
+</pre>
+<h3>Cardiac Exam Schema</h3>
+<pre id="cardiac_exam_schema">
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "heart_rate": {
+      "oneOf": [
+        {
+          "type": "integer",
+          "description": "The patient's heart rate in beats per minute."
+        },
+        {
+          "type": "string",
+          "enum": ["regular", "tachy", "brady"],
+          "description": "The patient's heart rate description."
+        }
+      ]
+    },
+    "rhythm": {
+      "oneOf": [
+        {
+          "type": "string",
+          "enum": ["regular", "irregular", "irregularly irregular"],
+          "description": "The rhythm of the heart."
+        },
+        {
+          "type": "null",
+          "description": "No rhythm assessment recorded."
+        }
+      ]
+    },
+    "heart_sounds": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "s1": {
+              "type": "string",
+              "enum": ["normal", "accentuated", "diminished"],
+              "description": "Assessment of the first heart sound (S1)."
+            },
+            "s2": {
+              "type": "string",
+              "enum": ["normal", "accentuated", "diminished", "split"],
+              "description": "Assessment of the second heart sound (S2)."
+            },
+            "s3": {
+              "type": "string",
+              "enum": ["present", "absent"],
+              "description": "Assessment of the third heart sound (S3)."
+            },
+            "s4": {
+              "type": "string",
+              "enum": ["present", "absent"],
+              "description": "Assessment of the fourth heart sound (S4)."
+            },
+            "additional_sounds": {
+              "type": "string",
+              "description": "Description of any additional heart sounds."
+            }
+          },
+          "required": ["s1", "s2", "s3", "s4"]
+        },
+        {
+          "type": "string",
+          "description": "A simplified description of heart sounds."
+        }
+      ]
+    },
+    "murmurs": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "presence": {
+              "type": "string",
+              "enum": ["none", "present"],
+              "description": "Indicates whether a murmur is present."
+            },
+            "type": {
+              "type": "string",
+              "enum": ["systolic", "diastolic", "continuous"],
+              "description": "Type of murmur, if present."
+            },
+            "grade": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 6,
+              "description": "Grade of the murmur on a scale of 1 to 6."
+            },
+            "location": {
+              "type": "string",
+              "description": "Location where the murmur is best heard."
+            },
+            "radiation": {
+              "type": "string",
+              "description": "Radiation of the murmur to other areas."
+            },
+            "description": {
+              "type": "string",
+              "description": "Detailed description of the murmur."
+            }
+          },
+          "required": ["presence"]
+        },
+        {
+          "type": "null",
+          "description": "No murmur assessed or recorded."
+        }
+      ]
+    },
+    "peripheral_pulses": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "carotid": {
+              "type": "string",
+              "enum": ["normal", "diminished", "absent"],
+              "description": "Assessment of the carotid pulse."
+            },
+            "radial": {
+              "type": "string",
+              "enum": ["normal", "diminished", "absent"],
+              "description": "Assessment of the radial pulse."
+            },
+            "femoral": {
+              "type": "string",
+              "enum": ["normal", "diminished", "absent"],
+              "description": "Assessment of the femoral pulse."
+            },
+            "dorsalis_pedis": {
+              "type": "string",
+              "enum": ["normal", "diminished", "absent"],
+              "description": "Assessment of the dorsalis pedis pulse."
+            },
+            "posterior_tibial": {
+              "type": "string",
+              "enum": ["normal", "diminished", "absent"],
+              "description": "Assessment of the posterior tibial pulse."
+            }
+          },
+          "required": ["carotid", "radial", "femoral", "dorsalis_pedis", "posterior_tibial"]
+        },
+        {
+          "type": "null",
+          "description": "No peripheral pulse assessment."
+        }
+      ]
+    },
+    "blood_pressure": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "systolic": {
+              "type": "integer",
+              "description": "The systolic blood pressure in mmHg."
+            },
+            "diastolic": {
+              "type": "integer",
+              "description": "The diastolic blood pressure in mmHg."
+            },
+            "position": {
+              "type": "string",
+              "enum": ["sitting", "standing", "lying down"],
+              "description": "The position of the patient during blood pressure measurement."
+            }
+          },
+          "required": ["systolic", "diastolic", "position"]
+        },
+        {
+          "type": "string",
+          "description": "A simplified description of blood pressure."
+        }
+      ]
+    },
+    "jugular_venous_pressure": {
+      "oneOf": [
+        {
+          "type": "string",
+          "description": "Assessment of the jugular venous pressure (JVP)."
+        },
+        {
+          "type": "null",
+          "description": "No JVP assessment recorded."
+        }
+      ]
+    },
+    "edema": {
+      "oneOf": [
+        {
+          "type": "string",
+          "enum": ["none", "mild", "moderate", "severe"],
+          "description": "Assessment of peripheral edema."
+        },
+        {
+          "type": "null",
+          "description": "No edema assessment recorded."
+        }
+      ]
+    },
+    "additional_notes": {
+      "oneOf": [
+        {
+          "type": "string",
+          "description": "Any additional notes or observations during the heart exam."
+        },
+        {
+          "type": "null",
+          "description": "No additional notes recorded."
+        }
+      ]
+    }
+  },
+  "required": [
+    "heart_rate",
+    "rhythm",
+    "heart_sounds",
+    "murmurs",
+    "peripheral_pulses",
+    "blood_pressure",
+    "jugular_venous_pressure",
+    "edema"
+  ],
+  "additionalProperties": false
+}
+</pre>
     <!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-beta1/js/bootstrap.bundle.min.js"></script> -->
 <script src="js/popper.min.js"></script>
     <!-- <script src="assets/js/jquery.min.js"></script> -->
