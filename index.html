@@ -31,8 +31,8 @@
                     <ul class="navbar-nav mr-auto">
                       <li class="nav-item active"> <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a> </li>
                       <li class="nav-item"> <a class="nav-link" href="https://www.openhealth.org">Openhealth</a> </li>
-                      <li class="nav-item dropdown"> <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown1" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Dropdown </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown1"> <a class="dropdown-item" href="#">Action</a> <a class="dropdown-item" href="#">Another action</a>
+                      <li class="nav-item dropdown"> <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown1" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Schemas </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown1"> <a class="dropdown-item" href="#operative_report_schema">Operative Report Schema</a> <a class="dropdown-item" href="#person_schema">Person Schema</a>
                           <div class="dropdown-divider"></div>
                           <a class="dropdown-item" href="#">Something else here</a> </div>
                       </li>
@@ -50,8 +50,8 @@
     </div>
 <p>JSON or Javascript Object Notation, is a data format that has taken the web by storm. JSON is essentially a simpler, more compact and more easily readable XML which is the serialization format for javascript objects, so it works with both server and client side software.</p>
 	<p>We have developed relatively simple schemas for healthcare formats such as history and physical documents, radiology reports, operative reports etc. These leverage JSON formats used in healthcare namely <a href="http://fhir.org">FHIR.</a></p>
-	<p>In distinction to the <a href="https://hl7.org">HL7 standards</a>, which represent the information in healthcare systems, these formats are intended to be simplified versions which represent the information used by healthcaare practitioners, yet including identifiers which can allow healthcare systems to obtain the full context from these simplified documents. For example a "rx" or presectiption needs to contain the patient's name and identifiers such as birthdate, and id as well as codes needed to definitively identify the prescribed drug, frequency of intake and length of time i.e. what used to be on a written script. Similarly a history and physical contains the information on the history and physical as well as patient identifying information but not necessarily all the metadata.</p>
-	<p>It is intended that healthcare organizations can exchange these documents with full HL7 compliant databaases. Once data is in JSON format, its easy(er) to transform specific formats.</p>
+<p>In distinction to the <a href="https://hl7.org">HL7 standards</a>, which represent the information in healthcare systems, these formats are intended to be simplified versions which represent the information used by healthcaare practitioners, yet including identifiers which can allow healthcare systems to obtain the full context from these simplified documents. For example a "rx" or presectiption needs to contain the patient's name and identifiers such as birthdate, and id as well as codes needed to definitively identify the prescribed drug, frequency of intake and length of time i.e. what used to be on a written script. Similarly a history and physical contains the information on the history and physical as well as patient identifying information but not necessarily all the metadata.</p>
+	<p>It is intended that healthcare organizations can exchange these documents with full HL7 compliant databases. Once data is in JSON format, its easy(er) to transform specific formats.</p>
 	<pre id="operative_report_template">
   operative_report : { 
 	type : "Operative Report",
@@ -71,7 +71,7 @@
   }
 	</pre>
 	<p>This is what healthcare professionals recognize as an operaative report. It is essentially JSON. We can create a actual JSON schema to specify this:</p>
-	<pre id="operative_report_schema">
+<pre id="operative_report_schema">
 const operative_report_schema = {
 	"$schema": "http://json-schema.org/draft-07/schema#",
 	"type": "object",
