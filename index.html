@@ -53,22 +53,22 @@
 	<p>In distinction to the <a href="https://hl7.org">HL7 standards</a>, which represent the information in healthcare systems, these formats are intended to be simplified versions which represent the information used by healthcaare practitioners, yet including identifiers which can allow healthcare systems to obtain the full context from these simplified documents. For example a "rx" or presectiption needs to contain the patient's name and identifiers such as birthdate, and id as well as codes needed to definitively identify the prescribed drug, frequency of intake and length of time i.e. what used to be on a written script. Similarly a history and physical contains the information on the history and physical as well as patient identifying information but not necessarily all the metadata.</p>
 	<p>It is intended that healthcare organizations can exchange these documents with full HL7 compliant databaases. Once data is in JSON format, its easy(er) to transform specific formats.</p>
 	<pre id="operative_report_template">
-	operative_report : { 
-    "type" : "Operative Report",
-    "patient":  {"Name": "John Doe", "Medical Record Number": "123456"},
-    "Date of Surgery": "2024-06-28","Surgeon": 
-    "Dr. Jane Smith",
-	"Assistant": "Dr. Emily Brown",
-	"Preoperative Diagnosis": "preop_diagnoses field ",
-	"Postoperative Diagnosis": "Same",
-      "Procedure": "procedures field",
-      "Indications": "either submitted in indications field or return detailed example Indications",
-      "Anesthesia": "General endotracheal anesthesia was administered.",
-      "Description of Procedure": "Return highly detailed example description of procedure", 
-      "Estimated Blood Loss" : "ebl", 
-      "Findings" : "example findings", 
-      "Specimens" : "example specimens"
-	}
+  operative_report : { 
+	type : "Operative Report",
+	patient:  {"Name": "John Doe", "id": "123456"},
+	Date of Surgery: "2024-06-28",
+	Surgeon: "Dr. Jane Smith",
+	Assistant: "Dr. Emily Brown",
+	Preoperative Diagnosis: "preop_diagnoses field ",
+	Postoperative Diagnosis: "Same",
+	Procedure: "procedures field",
+	Indications: "either submitted in indications field or return detailed example Indications",
+	Anesthesia: "General endotracheal anesthesia was administered.",
+	Description of Procedure": "Return highly detailed example description of procedure", 
+	Estimated Blood Loss : "ebl", 
+	Findings : "example findings", 
+	Specimens : "example specimens"
+  }
 	</pre>
     <!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-beta1/js/bootstrap.bundle.min.js"></script> -->
 <script src="js/popper.min.js"></script>
