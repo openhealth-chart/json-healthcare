@@ -168,12 +168,34 @@
 	<h3>patient schema</h3>
 	<pre id="patient_schema">
 {
-  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$schema": "https://json-schema.org/draft/2019-09/schema",
+  // // "$id"  : "http://json-healthcare.org/#patient_schema",
   "type": "object",
   "properties": {
     "id": {
       "type": "string",
-      "description": "The unique identifier for the person."
+      "description": "The identifier for the person with the application or example."
+    },
+    "identifier" : {
+      "type" : "object",
+      "properties" : {
+        "use" : {
+          "type" :"string",
+          "enum" : ["official","usual","temp","secondary","old"],
+          "description" : "identifier type, typically officual or usual if acive"
+        },
+        "system" : {
+          "type" : "string",
+          "format" : "uri",
+          "description" : "URI identifying issuer or identifier, eg [https://chart.openhealth.org/identifier]"
+        },
+        "value" : {
+          "type" : "string",
+          "description" : "the identifier unique within the system namespace"
+        }
+      },
+      "required" : ["value","system"],
+      "additionalProperties" : false
     },
     "name": {
       "type": "array",
@@ -191,6 +213,20 @@
               "description": "The given name(s) (first name, middle name) of the person."
             },
             "minItems": 1
+          },
+          "prefix": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "description": "The prefixes (e.g. Mr.,Dr.) of the person name."
+            },
+          },
+          "suffic": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "description": "The suffixes (e.g. [III,PH.D.] of the person name."
+            }
           }
         },
         "required": ["family", "given"],
@@ -212,7 +248,7 @@
       "description": "The gender of the person."
     }
   },
-  "required": ["id", "name", "gender"],
+  "required": ["id","identifier","name", "gender"],
   "oneOf": [
     { "required": ["birthdate"] },
     { "required": ["age"] }
