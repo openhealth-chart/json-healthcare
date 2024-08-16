@@ -42,10 +42,11 @@
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown1" role="button" data-bs-toggle="dropdown" aria-expanded="false"> Schemas </a>
         <ul class="dropdown-menu" aria-labelledby="navbarDropdown1">
         	<li><a class="dropdown-item" href="#operative_report_schema">Operative Report Schema</a></li>
-		<li><a class="dropdown-item" href="#initial_consulation_schema">Initial Consulation Schema</a></li>
+		<li><a class="dropdown-item" href="#initial_consultation_schema">Initial Consulation Schema</a></li>
 		<li><hr class="dropdown-divider"></li>
         	<li><a class="dropdown-item" href="#patient_schema">Patient Schema</a></li>
 		<li><a class="dropdown-item" href="#code_schema">Code Schema</a></li>
+		<li><hr class="dropdown-divider"></li>
 			<li><a class="dropdown-item" href="#neurologic_exam_schema">Neurologic Exam Schema</a></li>
 			<li><a class="dropdown-item" href="#opthalmicc_exam_schema">Opthalmic Exam Schema</a></li>
 			<li><a class="dropdown-item" href="#HEENT_exam_schema">HEENT Exam Schema</a></li>
@@ -97,6 +98,7 @@
 <pre id="operative_report_schema">
 {
 	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "http://json-healthcare.org/#operative_report_schema"
 	"type": "object",
 	"properties": {
     	"type" : {
@@ -1402,6 +1404,7 @@
 <pre id="plan_schema">
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://json-healthcare/#plan_schema"
   "$defs" : {
   // the following should be defined at the top document level in order to avoid multiple definitions
   //  "Patient": patient_schema,
@@ -1659,7 +1662,7 @@
 	<pre id="initial_consultation_schema">
 {
   "$schema": "https://json-schema.org/draft/2020-012/schema",
-  "$id": "https://json-healthcare.org/initial_consultation_schema",
+  "$id": "https://json-healthcare.org/#initial_consultation_schema",
   "type": "object",
   "$defs" : {
     "Patient": { "$ref" : "/patient_schema"},
