@@ -42,7 +42,10 @@
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown1" role="button" data-bs-toggle="dropdown" aria-expanded="false"> Schemas </a>
         <ul class="dropdown-menu" aria-labelledby="navbarDropdown1">
         	<li><a class="dropdown-item" href="#operative_report_schema">Operative Report Schema</a></li>
+		<li><a class="dropdown-item" href="#initial_consulation_schema">Initial Consulation Schema</a></li>
+		<li><hr class="dropdown-divider"></li>
         	<li><a class="dropdown-item" href="#patient_schema">Patient Schema</a></li>
+		<li><a class="dropdown-item" href="#code_schema">Code Schema</a></li>
 			<li><a class="dropdown-item" href="#neurologic_exam_schema">Neurologic Exam Schema</a></li>
 			<li><a class="dropdown-item" href="#opthalmicc_exam_schema">Opthalmic Exam Schema</a></li>
 			<li><a class="dropdown-item" href="#HEENT_exam_schema">HEENT Exam Schema</a></li>
@@ -50,8 +53,6 @@
 			<li><a class="dropdown-item" href="#pulmonary_exam_schema">Pulmonary Exam Schema</a></li>
 			<li><a class="dropdown-item" href="#abdominal_exam_schema">Abdominal Exam Schema</a></li>
 			<li><a class="dropdown-item" href="#vascular_exam_schema">Vascular Exam Schema</a></li>
-          <li><hr class="dropdown-divider"></li>
-          <li><a class="dropdown-item" href="#">Something else here</a></li>
         </ul>
       </li>
       <li class="nav-item"> 
@@ -168,7 +169,7 @@
 	<h3>patient schema</h3>
 	<pre id="patient_schema">
 {
-  "$schema": "https://json-schema.org/draft/2019-09/schema",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id"  : "http://json-healthcare.org/#patient_schema",
   "type": "object",
   "properties": {
@@ -182,19 +183,21 @@
         "use" : {
           "type" :"string",
           "enum" : ["official","usual","temp","secondary","old"],
-          "description" : "identifier type, typically officual or usual if acive"
+          "description" : "identifier type, typically officual or usual if acive",
+          //"default" : "usual"
         },
         "system" : {
           "type" : "string",
           "format" : "uri",
-          "description" : "URI identifying issuer or identifier, eg [https://chart.openhealth.org/identifier]"
+          "description" : "URI identifying issuer or identifier example: [https://chart.openhealth.org/identifier]",
+          //"default" : "https://chart.openhealth.org/identifier"
         },
         "value" : {
           "type" : "string",
           "description" : "the identifier unique within the system namespace"
         }
       },
-      "required" : ["value","system"],
+      "required" : ["value","system","use"],
       "additionalProperties" : false
     },
     "name": {
@@ -254,11 +257,12 @@
     { "required": ["age"] }
   ],
   "additionalProperties": false
-}</pre>
+};</pre>
 	<h3>code schema</h3>
 	<pre id="code_schema">
 {
-  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id"  : "http://json-healthcare.org/#code_schema",
   "type": "array",
   "items": {
     "type": "object",
@@ -270,15 +274,35 @@
       "description": {
         "type": "string",
         "description": "Description of the ICD10 or CPT code."
-      },
-      "text": {
-        "type": "string",
-        "description": "Text corresponding to this ICD10 or CPT code from the user request."
       }
     },
     "required": ["code", "description"],
     "additionalProperties": false
-}};</pre>
+  }}</pre>
+	<h3>Coding Schema (array)</h3>
+	<pre id="coding_schema">
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id"  : "http://json-healthcare.org/#coding_schema",
+  "type": "object",
+  "properties": {
+    "comments": {
+      "type": "string",
+      "description": "Provide justification for codes."
+    },
+    "icd10_codes": {
+      "type": ["array","null"],
+      "items": code_schema
+    },
+    "cpt_codes": {
+      "type": ["array","null"],
+      "items": code_schema
+    }
+  },
+  "required": ["comments","icd10_codes","cpt_codes"],
+  "additionalProperties": false
+};
+</pre>
 	<h3>Neurologic Exam</h3>
 <pre id="neurologic_exam_schema">
 {
@@ -1373,6 +1397,415 @@
   "additionalProperties": false
 }
 </pre>
+	<h3>Plan Schema</h3>
+	<p>this is intended to be incorpated into document schemas</p>
+<pre id="plan_schema">
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$defs" : {
+  // the following should be defined at the top document level in order to avoid multiple definitions
+  //  "Patient": patient_schema,
+  //  "ICD10Codes": code_schema,
+  //  "CPTCodes": code_schema,
+    "LaboratoryOrder": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "Laboratory Order"
+        },
+        "order": {
+          "type": "object",
+          "properties": {
+            "date": {
+              "type": "string",
+              "format": "date"
+            },
+            "reason_for_test": {
+              "type": "string"
+            },
+            "clinical_indications": {
+              "type": "string"
+            },
+            "tests_ordered": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/CPTCodes",
+              }
+            }
+          },
+          "required": ["date", "reason_for_test", "clinical_indications", "tests_ordered"]
+        }
+      },
+      "required": ["type", "order"] //"patient"
+    },
+    "RadiologyOrder": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "Radiology Order"
+        },
+        "order": {
+          "type": "object",
+          "properties": {
+            "date": {
+              "type": "string",
+              "format": "date"
+            },
+            "reason_for_test": {
+              "type": "string"
+            },
+            "clinical_indications": {
+              "type": "string"
+            },
+            "tests_ordered": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/CPTCodes",
+              }
+            }
+          },
+          "required": ["date", "reason_for_test", "clinical_indications", "tests_ordered"]
+        }
+      },
+      "required": ["type", "order"]
+    },
+    "FollowupAppointment": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "Followup Appointment"
+        },
+        "reason": {
+          "type": "string"
+        }
+      },
+      "required": ["type", "reason"]
+    },
+    "PhysicalTherapyReferral": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "Physical Therapy Referral"
+        },
+        //"patient": { "$ref": "#/$defs/Patient"},
+        "referral": {
+          "type": "object",
+          "properties": {
+            "date": {
+              "type": "string",
+              "format": "date"
+            },
+            //"referring_physician": {"type": "string"},
+            "reason_for_referral": {
+              "type": "string"
+            },
+            "clinical_indications": {
+              "type": "string"
+            },
+            "services_requested": {
+              "type": "string"
+            },
+            "icd10_codes": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/ICD10Codes"
+              },
+              "description" : "ICD10 Codes for diagnoses being referred to PT"
+            }
+          },
+          "required": ["date", "reason_for_referral", "clinical_indications", "services_requested", "icd10_codes"] // "referring_physician", 
+        }
+      },
+      "required": ["type", "referral"] // "patient", 
+    },
+    "Referral" : {
+          "type": "object",
+          "properties": {
+              "type": {
+                "type": "string",
+                "const": "Referral"
+              },
+              "date": {
+                "type": "string",
+                "format": "date"
+              },
+              //"referring_provider": { "type": "string"},
+              "reason_for_referral": {
+                "type": "string"
+              },
+              "suspected_diagnoses": {
+                "type": "array",
+                "items": {
+                  "$ref" : "#/$defs/ICD10Codes"
+                }
+              },
+              "procedures_requested": {
+                "type": ["array","null"],
+                "items": {
+                  "$ref" : "#/$defs/CPTCodes"
+                }
+              },
+              "clinical_indications": {
+                "type": "string"
+              },
+              "specialist_requested": {
+                "type": "string"
+              }
+            },
+            "required": ["date", "reason_for_referral", "suspected_diagnoses", "clinical_indications", "specialist_requested","procedures_requested"] //"referring_provider",
+    },
+    "Prescription" : {
+      "type": "object",
+      "properties": {
+      "type": {
+        "type": "string",
+        "const": "Prescription"
+      },
+      // "patient": {"$ref": "#/$defs/Patient"},
+    //"prescribing_physician": {"type": "string"},
+      "prescription_date": {
+      "type": "string",
+      "format": "date"
+      },
+     "medications": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+          "drug_name": {
+            "type": "string"
+          },
+          "dosage": {
+            "type": "string"
+          },
+          "frequency": {
+            "type": "string"
+          },
+          "route_of_administration": {
+            "type": "string"
+          },
+          "duration": {
+            "type": "string"
+          }
+        },
+        "required": ["drug_name", "dosage", "frequency", "route_of_administration", "duration"]
+      }
+    },
+    "special_instructions": {
+      "type": ["string","null"]
+    },
+    "refills": {
+      "type": "integer",
+      "minimum": 0
+    }
+  },
+  "required": [
+    "type",
+//    "patient",
+//    "prescribing_physician",
+    "prescription_date",
+    "medications",
+    "special_instructions",
+    "refills"
+  ]
+},
+"Discussion" : {
+  "type" : "object",
+  "properties" : {
+  "type": {
+                "type": "string",
+                "const": "Discussion"
+              },    
+    "discussion" : {
+      "type" : "string"
+      },
+    "minutes" : {
+      "type" : "integer"
+    }
+  }
+},
+"Instructions" : {
+  "type" : "object",
+  "properties" : {
+    "type": {
+                "type": "string",
+                "const": "Instructions"
+              },    
+    "instructions" : {
+      "type" : "string"
+      },
+  }
+}},
+  "type": "array",
+  "items": {
+        "oneOf": [
+          { "$ref": "#/$defs/RadiologyOrder"},
+          { "$ref": "#/$defs/LaboratoryOrder" },
+          { "$ref": "#/$defs/FollowupAppointment" },
+          { "$ref": "#/$defs/PhysicalTherapyReferral" },
+          { "$ref": "#/$defs/Referral" },
+          { "$ref": "#/$defs/Presecription" },
+          { "$ref": "#/$defs/Discussion" },
+          { "$ref": "#/$defs/Instructions"}
+        ]
+      }
+}
+</pre>
+	<h3>Initial Consultation Schema</h3>
+	<pre id="initial_consultation_schema">
+{
+  "$schema": "https://json-schema.org/draft/2020-012/schema",
+  "$id": "https://json-healthcare.org/initial_consultation_schema",
+  "type": "object",
+  "$defs" : {
+    "Patient": { "$ref" : "/patient_schema"},
+    "ICD10Codes": { "$ref" : "/code_schema"},
+    "CPTCodes": { "$ref" : "/code_schema"}
+    },
+  "properties": {
+    "type": {
+      "type": "string",
+      "const": "initial_consultation"
+    },
+    "specialty" : {
+      "type" : "string",
+      "description" : "type of specialist performing consulation"
+    },
+    "patient": { "$ref" : "#/$defs/Patient" },
+    "Date_of_Consultation": {
+      "type": "string",
+      "format": "date"
+    },
+    "Consultant": {
+      "type": "string"
+    },
+    "Referring_Provider": {
+      "type": "string"
+    },
+    "Chief_Complaint": {
+      "type": "string"
+    },
+    "History_of_Present_Illness": {
+      "type": "string"
+    },
+    "Past_Medical_History": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "Surgical_History": {
+      "type": "string"
+    },
+    "Family_History": {
+      "type": "string"
+    },
+    "Social_History": {
+      "type": "object",
+      "properties": {
+        "Smoking": {
+          "type": "string"
+        },
+        "Alcohol": {
+          "type": "string"
+        },
+        "Drug_Use": {
+          "type": "string"
+        }
+      },
+      "required": ["Smoking", "Alcohol", "Drug_Use"],
+      "additionalProperties" : false
+    },
+    "Medications": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "Allergies": {
+      "type": "string"
+    },
+    "Review_of_Systems": {
+      "type": "object",
+      "properties": {
+        "General": {
+          "type": "string"
+        },
+        "HEENT": {
+          "type": "string"
+        },
+        "Cardiovascular": {
+          "type": "string"
+        },
+        "Respiratory": {
+          "type": "string"
+        },
+        "Gastrointestinal": {
+          "type": "string"
+        },
+        "Genitourinary": {
+          "type": "string"
+        },
+        "Neurological": {
+          "type": "string"
+        },
+        "Musculoskeletal": {
+          "type": "string"
+        }
+      },
+      "required": ["General", "HEENT", "Cardiovascular", "Respiratory", "Gastrointestinal", "Genitourinary", "Neurological", "Musculoskeletal"],
+      "additioanlProperties" : false
+    },
+    "Physical_Examination": { "$ref" : "/physical_exam_schema" },
+    "Assessment": {
+      "type": "object",
+      "properties": {
+        "impression": {
+          "type": "string",
+          "description" : "text description of the reasoning and findings leading to assessment"
+        },
+        "icd10_codes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ICD10Codes"
+          },
+          "description" : "Assessment diagnoses as CPT codes"
+        }
+      },
+      "required": ["impression", "icd10_codes"],
+      "additonalProperties" : false
+    },
+    "Plan": { "$ref" : "/plan_schema },
+    "Consultant_Signature": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "type",
+    "patient",
+    "Date_of_Consultation",
+    "Consultant",
+    "Chief_Complaint",
+    "History_of_Present_Illness",
+    "Past_Medical_History",
+    "Surgical_History",
+    "Family_History",
+    "Social_History",
+    "Medications",
+    "Allergies",
+    "Review_of_Systems",
+    "Physical_Examination",
+    "Assessment",
+    "Plan",
+    "Consultant_Signature"
+  ],
+  "additionalProperties" : false
+}
+	</pre>
     <!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-beta1/js/bootstrap.bundle.min.js"></script> -->
 <script src="js/popper.min.js"></script>
     <!-- <script src="assets/js/jquery.min.js"></script> -->
